@@ -94,26 +94,27 @@ struct user getdetails(int x)
 	char uname[20];
 	char pwd[20];
 	if(x==1)
-	strcpy(str,"Client");
+	strcpy(str,"CLIENT");
 	else
-	strcpy(str,"Server");
+	strcpy(str,"SERVER");
 	int choice=0;
 	int Banker_pass=0;
 
 	system("clear");
 
-	printf("\n\n\t\t\t\t    REMOTE CALCULATOR ",str);
-	printf("\n\n\n\t\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2 %s Side \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2",str);
-		printf("\n\n\t\t\t_________________________________________\n\n");
+	printf("\n\nREMOTE CALCULATOR ",str);
+	//printf("\n\n\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2%s SIDE \xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2",str);
+	printf("\n\n%s SIDE ",str);
+		printf("\n\n_________________________________________\n\n");
 		//printf("\n\n");
-		printf("\t\t\tEnter Username :  ");
+		printf("ENTER USERNAME :  ");
 		fgets(newuser.username,20,stdin);
 		newuser.username[strlen(newuser.username)-1]='\0';
 		printf("\n\n");
-		printf("\t\t\tEnter Password :  ");
+		printf("ENTER PASSWORD :  ");
 		fgets(newuser.password,20,stdin);
 		newuser.password[strlen(newuser.password)-1]='\0';
-		
+		printf("\n");
 	return newuser;
 }
 int login(int x)               

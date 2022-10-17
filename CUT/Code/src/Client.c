@@ -1,11 +1,4 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<netdb.h>
+#include "../Header/Header2.h"
 #include "login.c"
 void error(const char *msg){
 	perror(msg);
@@ -32,7 +25,7 @@ int main(int argc,char *argv[]){
 	if(sockfd < 0){
 		error("Error opening socket");
 	}
-
+	
 	server = gethostbyname(argv[1]);
 	if(server == NULL){
 		fprintf(stderr,"no Such host");
@@ -48,33 +41,59 @@ int main(int argc,char *argv[]){
 	}
       	
   
-	int num1,num2,choice,ans;
 	
 	send(sockfd,&newuser,sizeof(newuser),0); 
 	
- X:   
-	bzero(buffer,256);
+
+	char expression[256];
+	char nums[256];
+	char operands[256];
+    
+	//while(getchar()!='\n');
+X:	bzero(buffer,256);
 	read(sockfd,buffer,256);
 	
 
-	char expression[255];
-        printf("Server - %s\n",buffer);
-        scanf("%s",expression);
-        write(sockfd,&expression,sizeof(expression));
+	printf("SERVER - %s",buffer);
+    	
+	scanf("%s",nums);
+	//fgets(nums,256,stdin);
+	//nums[strlen(nums)-1]='\0';//must
 
-	int answer;
-	read(sockfd,&answer,sizeof(int));
-	printf("Server : The answere is : %d\n",answer);
+	int x=write(sockfd,&nums,sizeof(nums));
+	bzero(buffer,256);
+	read(sockfd,buffer,256);
+	//getchar();
+	printf("SERVER - %s",buffer); 
+      // 	bzero(buffer,256);
+	//read(sockfd,buffer,256);
+
+	//printf("SERVER - %s",buffer); 
+	scanf("%s",operands);
+	printf("%s",operands);
+	//fgets(operands,256,stdin);
+	//operands[strlen(operands)-1]='\0';//must
 	
+	int y=write(sockfd,&operands,sizeof(operands));
+
+	char answer[256];
+	read(sockfd,&answer,sizeof(answer));
+	//answer[strlen(answer)]='\0';
 	
-	printf("\n \n 1. Continue \n 2. Exit");
+	printf("SERVER : THE ANSWER IS : %s\n",answer);
+	int choice;
+	printf("\n\n1.CONTINUE \n2.EXIT\n");
 	scanf("%d",&choice);
 	write(sockfd,&choice,sizeof(choice));
+	
 	if(choice==1)
 	{
-	goto X;
+		goto X;
 	}
-	printf("You Have Selected to exit\nExit Successfully");
+	
+	
+	
+	printf("YOU HAVE SELECTED TO EXIT \nEXIT SUCCESSFULLY!!!");
 	close(sockfd);
 	return 0;
 

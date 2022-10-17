@@ -1,10 +1,4 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
+#include "../Header/Header1.h"
 #include "Calculate.c"
 #include "login.c"
 void error(const char *msg){
@@ -16,7 +10,7 @@ void error(const char *msg){
 
 int main(int argc,char *argv[]){
 	if(argc < 2){
-		fprintf(stderr , "Port not providede . Program Terminated \n");
+		fprintf(stderr , "Port not provided . Program Terminated \n");
 		exit(1);
 	}
 
@@ -28,7 +22,7 @@ int main(int argc,char *argv[]){
 
 	sockfd = socket(AF_INET,SOCK_STREAM,0);
 	if(sockfd < 0){
-		// if sock fd is resultaing in failure
+		// if sock fd is resulting in failure
 		error("Error opening socket");
 	} 
 	
@@ -71,31 +65,59 @@ int main(int argc,char *argv[]){
 			return 0;
 	}
 	
-S:	int msg1,msg2,answer,choice;
 	
-	msg1 = write(newsockfd,"Operators allowed are ( + , - , * , /) !!! \n",strlen("Operators allowed are ( + , - , * , /) !!! \n"));
-	msg2 = write(newsockfd,"Enter the Expression : ",strlen("Enter the Expression : "));
+	int msg1,msg2,msg3,answer,choice;
+	
+	char num[256];
+	char operands[256];	
+	char  expression[256];
 
-	//defining expression string
-	char expression[255];
 	
-	read(newsockfd,&expression,sizeof(expression));
-	expression[strlen(expression)]='\0';
-	printf("Entered expression is : %s \n",expression);
 	
+S:	msg1 = write(newsockfd,"ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : ",strlen("ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : "));
+	if(msg1<0)
+	{
+	error("error writing to socket");	
+	}
+	read(newsockfd,&num,sizeof(num));
+	
+
+	//defining numbers and operands array 
+
+	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));	
+	//msg3 = write(newsockfd,"ENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("ENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
+	read(newsockfd,&operands,sizeof(operands));
+	//printf("-%s-",num);
+	//operands[strlen(operands)]='\0';	
+	
+	tn=-1;
+	to=-1;
+	solve(expression,num,operands); 
+    	printf("Entered expression is : %s \n",expression);
 	answer=eval(expression);
 	
-
-	int x=write(newsockfd,&answer,sizeof(int)); 
+	printf(" ans is %d +",answer);
+	char finans[256];
+	//printf("%s=",finans);
+	sprintf(finans,"%d",answer);
+	//printf("-%s-",finans);
+	//printf("%s",finans);
+	int x=write(newsockfd,&finans,sizeof(finans));
+ 
 	if(x<0)
 	{
 	error("answer printing error");	
 	}
 	
-	read(newsockfd,&choice,sizeof(int));
-	if(choice==1)
+	read(newsockfd,&x,sizeof(int));
+	if(x==1)
 	{
-	goto S;
+		strcpy(num,"");
+		strcpy(operands,"");
+		strcpy(buffer,"");
+                strcpy(expression,"");
+
+		goto S;
 	}
 	close(newsockfd);
 	close(sockfd);

@@ -1,32 +1,32 @@
 #gcovexec= Calculate Client Server login
-srcfiles= Calculate.c Client.c Server.c login.c
+srcfiles= Client.c Server.c
 port=6000
-server: SRC/Server.c
-	gcc -o bin/server SRC/Server.c
+server: src/Server.c
+	gcc -o bin/server src/Server.c
 
 runser: 
 	./bin/server $(port)
 
-client: SRC/Client.c
-	gcc -o bin/client SRC/Client.c
+client: src/Client.c
+	gcc -o bin/client src/Client.c
 
 runcl: 
 	./bin/client 127.0.0.1 $(port)
 
 
 gcovcompile:
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Server SRC/Server.c
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Calculate SRC/Calculate.c
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/login SRC/login.c
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Client SRC/Client.c
+	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Server src/Server.c
+	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Client src/Client.c
 
 gcovrun: 
-	gcov -b -c SRC/$(srcfiles)
+	gcov -b ../ToolsReport/GCOV/Server.c
+	gcov -b ../ToolsReport/GCOV/Client.c
+
 
 #gcovresult:
 	#cat ../ToolsReport/GCOV/$(srcfiles).gcov
 
 clean: 
-	rm -rf /bin/*.o /bin/*.exe
+	rm -rf /bin/%.exe
 	
 

@@ -6,7 +6,7 @@ void error(const char *msg){
 	exit(1);
 }
 
-// argc is the total number of parameter we are passing 
+// argc is the total number of parameter we are passing
 
 int main(int argc,char *argv[]){
 	if(argc < 2){
@@ -18,16 +18,16 @@ int main(int argc,char *argv[]){
 	char buffer[255]; // to store msg ot send
 
 	struct sockaddr_in serv_addr , cli_addr;
-	socklen_t clilen; //socklen_t is a datatype in socket.h 32 bit 
+	socklen_t clilen; //socklen_t is a datatype in socket.h 32 bit
 
 	sockfd = socket(AF_INET,SOCK_STREAM,0);
 	if(sockfd < 0){
 		// if sock fd is resulting in failure
 		error("Error opening socket");
-	} 
-	
-	bzero((char *) &serv_addr,sizeof(serv_addr)); // it clears all the data to what it it reference to 
-      
+	}
+
+	bzero((char *) &serv_addr,sizeof(serv_addr)); // it clears all the data to what it it reference to
+
 	portno = atoi(argv[1]);
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -35,11 +35,11 @@ int main(int argc,char *argv[]){
 
 	if(bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0){
 		error("Binding Failed");
-		
+
 	}
 
 	// next step is our server is trying to connect
-	
+
 	listen(sockfd,5);
 	clilen = sizeof(cli_addr);
 
@@ -47,8 +47,8 @@ int main(int argc,char *argv[]){
 	if(newsockfd < 0){
 		error("Error on Accept");
 	}
-	
-	//user authentication 
+
+	//user authentication
 	int errmsg;
 	struct user newuser;
 	recv(newsockfd, &newuser, sizeof(struct user), 0);
@@ -58,57 +58,57 @@ int main(int argc,char *argv[]){
 			return 0;
 			//errmsg=write(newsockfd,"ERROR")
 		}
-		
+
 	if(strcmp(newuser.password,"hmm")!=0)
 	{		errmsg=write(newsockfd,"Wrong Password !!!",strlen("Wrong Password !!!"));
 			close(newsockfd);
 			return 0;
 	}
-	
-	
+
+
 	int msg1,msg2,msg3,answer,choice;
-	
+
 	char num[256];
-	char operands[256];	
+	char operands[256];
 	char  expression[256];
 
-	
-	
+
+
 S:	msg1 = write(newsockfd,"ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : ",strlen("ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : "));
 	if(msg1<0)
 	{
-	error("error writing to socket");	
+	error("error writing to socket");
 	}
 	read(newsockfd,&num,sizeof(num));
-	
 
-	//defining numbers and operands array 
 
-	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));	
+	//defining numbers and operands array
+
+	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
 	//msg3 = write(newsockfd,"ENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("ENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
 	read(newsockfd,&operands,sizeof(operands));
 	//printf("-%s-",num);
-	//operands[strlen(operands)]='\0';	
-	
+	//operands[strlen(operands)]='\0';
+
 	tn=-1;
 	to=-1;
-	solve(expression,num,operands); 
-    	printf("Entered expression is : %s \n",expression);
+	solve(expression,num,operands);
+    printf("Entered expression is : %s \n",expression);
 	answer=eval(expression);
-	
-	printf(" ans is %d +",answer);
+
+	//printf(" ans is %d +",answer);
 	char finans[256];
 	//printf("%s=",finans);
 	sprintf(finans,"%d",answer);
 	//printf("-%s-",finans);
 	//printf("%s",finans);
 	int x=write(newsockfd,&finans,sizeof(finans));
- 
+
 	if(x<0)
 	{
-	error("answer printing error");	
+	error("answer printing error");
 	}
-	
+
 	read(newsockfd,&x,sizeof(int));
 	if(x==1)
 	{

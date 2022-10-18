@@ -1,0 +1,177 @@
+        -:    0:Source:Client.c
+        -:    0:Graph:c-Client.gcno
+        -:    0:Data:c-Client.gcda
+        -:    0:Runs:1
+        -:    1:#include "../Header/Header2.h"
+        -:    2:#include "login.c"
+function error called 0 returned 0% blocks executed 0%
+    #####:    3:void error(const char *msg){
+    #####:    4:	perror(msg);
+call    0 never executed
+    #####:    5:	exit(1);
+        -:    6:}
+        -:    7:
+function main called 1 returned 100% blocks executed 76%
+        1:    8:int main(int argc,char *argv[]){
+        -:    9:
+        1:   10:	struct user newuser=getdetails(1);
+call    0 returned 1
+        -:   11:	
+        -:   12:	int sockfd,portno,n;
+        -:   13:	struct sockaddr_in serv_addr;
+        -:   14:	struct hostent *server;
+        -:   15:
+        -:   16:	char buffer[256];
+        1:   17:	if(argc < 3){
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:   18:		fprintf(stderr,"usage %s hotname port\n",argv[0]);
+call    0 never executed
+call    1 never executed
+    #####:   19:		exit(1);
+call    0 never executed
+        -:   20:	}
+        -:   21:	
+        1:   22:	portno = atoi(argv[2]);
+call    0 returned 1
+        1:   23:	sockfd = socket(AF_INET,SOCK_STREAM,0);
+call    0 returned 1
+        -:   24:	
+        1:   25:	if(sockfd < 0){
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:   26:		error("Error opening socket");
+call    0 never executed
+        -:   27:	}
+        -:   28:	
+        1:   29:	server = gethostbyname(argv[1]);
+call    0 returned 1
+        1:   30:	if(server == NULL){
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+    #####:   31:		fprintf(stderr,"no Such host");
+call    0 never executed
+call    1 never executed
+    #####:   32:        exit(0);
+call    0 never executed
+        -:   33:	}
+        1:   34:	bzero((char *) &serv_addr,sizeof(serv_addr));
+        -:   35:	
+        1:   36:	serv_addr.sin_family = AF_INET;
+        1:   37:	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,server->h_length);
+        1:   38:	serv_addr.sin_port = htons(portno);
+call    0 returned 1
+        1:   39:	if(connect(sockfd, (struct sockaddr *) &serv_addr , sizeof(serv_addr)) < 0){
+call    0 returned 1
+branch  1 taken 0 (fallthrough)
+branch  2 taken 1
+    #####:   40:		error("Connection Failed !!");
+call    0 never executed
+        -:   41:	}
+        -:   42:      	
+        -:   43:  
+        -:   44:	
+        1:   45:	send(sockfd,&newuser,sizeof(newuser),0); 
+call    0 returned 1
+        -:   46:	
+        -:   47:
+        -:   48:	char expression[256];
+        -:   49:	char nums[256];
+        -:   50:	char operatr[256];
+        -:   51:    
+        -:   52:	//while(getchar()!='\n');
+        1:   53:X:	bzero(buffer,256);
+        1:   54:	read(sockfd,buffer,256);
+call    0 returned 1
+        -:   55:	
+        -:   56:
+        1:   57:	printf("SERVER - %s",buffer);
+call    0 returned 1
+        -:   58:    	
+        1:   59:	scanf("%s",nums);
+call    0 returned 1
+        -:   60:	/*if(!checkFormat(nums))
+        -:   61:	{
+        -:   62:		printf("INVALID !!! PLEASE ENTER THE OPERANDS IN THE CORRECT FORMAT.\n");
+        -:   63:		//goto X;
+        -:   64:		int choice;
+        -:   65:		printf("\n\n1.CONTINUE \n2.EXIT\n");
+        -:   66:		scanf("%d",&choice);
+        -:   67:		//write(sockfd,&choice,sizeof(choice));
+        -:   68:		
+        -:   69:		if(choice==1)
+        -:   70:		{
+        -:   71:			goto X;
+        -:   72:		}
+        -:   73:		
+        -:   74:	}*/
+        -:   75:	//fgets(nums,256,stdin);
+        -:   76:	//nums[strlen(nums)-1]='\0';//must
+        -:   77:
+        1:   78:	int x=write(sockfd,&nums,sizeof(nums));
+call    0 returned 1
+        1:   79:	bzero(buffer,256);
+        1:   80:	read(sockfd,buffer,256);
+call    0 returned 1
+        -:   81:	//getchar();
+        1:   82:	printf("SERVER - %s",buffer); 
+call    0 returned 1
+        -:   83:      // 	bzero(buffer,256);
+        -:   84:	//read(sockfd,buffer,256);
+        -:   85:
+        -:   86:	//printf("SERVER - %s",buffer); 
+        1:   87:	scanf("%s",operatr);
+call    0 returned 1
+        -:   88:	/*if(!checkFormat_operator(operatr))
+        -:   89:	{
+        -:   90:		printf("INVALID !!! PLEASE ENTER THE OPERATORS IN THE CORRECT FORMAT.\n");
+        -:   91:		//goto S;
+        -:   92:		int choice;
+        -:   93:		printf("\n\n1.CONTINUE \n2.EXIT\n");
+        -:   94:		scanf("%d",&choice);
+        -:   95:		//write(sockfd,&choice,sizeof(choice));
+        -:   96:		
+        -:   97:		if(choice==1)
+        -:   98:		{
+        -:   99:			goto X;
+        -:  100:		}
+        -:  101:		
+        -:  102:	}*/
+        -:  103:	//printf("%s",operands);
+        -:  104:	//fgets(operands,256,stdin);
+        -:  105:	//operands[strlen(operands)-1]='\0';//must
+        -:  106:	
+        1:  107:	int y=write(sockfd,&operatr,sizeof(operatr));
+call    0 returned 1
+        -:  108:
+        -:  109:	char answer[256];
+        1:  110:	read(sockfd,&answer,sizeof(answer));
+call    0 returned 1
+        -:  111:	//answer[strlen(answer)]='\0';
+        -:  112:	
+        1:  113:	printf("SERVER : THE ANSWER IS : %s\n",answer);
+call    0 returned 1
+        1:  114:S:	int choice;
+        1:  115:	printf("\n\n1.CONTINUE \n2.EXIT\n");
+call    0 returned 1
+        1:  116:	scanf("%d",&choice);
+call    0 returned 1
+        1:  117:	write(sockfd,&choice,sizeof(choice));
+call    0 returned 1
+        -:  118:	
+        1:  119:	if(choice==1)
+branch  0 taken 0 (fallthrough)
+branch  1 taken 1
+        -:  120:	{
+    #####:  121:		goto X;
+        -:  122:	}
+        -:  123:	
+        -:  124:	
+        -:  125:	
+        1:  126:	printf("YOU HAVE SELECTED TO EXIT \nEXIT SUCCESSFULLY!!!");
+call    0 returned 1
+        1:  127:	close(sockfd);
+call    0 returned 1
+        1:  128:	return 0;
+        -:  129:
+        -:  130:}

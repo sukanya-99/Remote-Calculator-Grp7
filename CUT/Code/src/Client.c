@@ -1,5 +1,20 @@
-#include "../Header/Header2.h"
-#include "login.c"
+/********************************************
+ * *FILENAME	      : Client.c
+ *
+ * *DESCRIPTION        : This file defines the functions that consists of various subfunctions 
+ * 			            to perform certain operations from client end. 
+ *
+ *
+ * Revision History   :	       
+ *
+ * 	Date			Name			Reason
+ *
+ * 14th Oct 2022	----			-----
+ *
+ *
+*********************************************/
+#include "../Header/Header.h"
+
 //function to print error message
 void error(const char *msg){
 	perror(msg);
@@ -34,7 +49,7 @@ int main(int argc,char *argv[]){
 	bzero((char *) &serv_addr,sizeof(serv_addr));//reset the address buffer to zero
 
 	serv_addr.sin_family = AF_INET;
-	
+
 	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,server->h_length);//giving socket address to the internet host
 	serv_addr.sin_port = htons(portno);
 	if(connect(sockfd, (struct sockaddr *) &serv_addr , sizeof(serv_addr)) < 0)//server connection is made
@@ -51,7 +66,7 @@ int main(int argc,char *argv[]){
 	char nums[256];
 	char operands[256];
 
-	//while(getchar()!='\n');
+
 X:	bzero(buffer,256);
 	read(sockfd,buffer,256);
 
@@ -59,8 +74,6 @@ X:	bzero(buffer,256);
 	printf("SERVER - %s",buffer);
 
 	scanf("%s",nums);
-	//fgets(nums,256,stdin);
-	//nums[strlen(nums)-1]='\0';//must
 
 	int x=write(sockfd,&nums,sizeof(nums));
 	bzero(buffer,256);
@@ -73,9 +86,7 @@ X:	bzero(buffer,256);
 
 	char answer[256];
 	read(sockfd,&answer,sizeof(answer));
-	//answer[strlen(answer)]='\0';
-
-	printf("SERVER : THE ANSWER IS : %s\n",answer);
+	printf("SERVER : %s\n",answer);
 	int choice;
 	printf("\n\n1.CONTINUE \n2.EXIT\n");
 	scanf("%d",&choice);

@@ -1,6 +1,19 @@
-#include "../Header/Header1.h"
-#include "Calculate.c"
-#include "login.c"
+/********************************************
+ * *FILENAME	      : Server.c
+ *
+ * *DESCRIPTION        : This file defines the functions that consists of various subfunctions 
+ * 			            to perform certain operations from server end. 
+ *
+ *
+ * Revision History   :	       
+ *
+ * 	Date			Name			Reason
+ *
+ * 14th Oct 2022	----			-----
+ *
+ *
+*********************************************/
+#include "../Header/Header.h"
 
 //function to print error message
 void error(const char *msg){
@@ -55,13 +68,13 @@ int main(int argc,char *argv[]){
 	int errmsg;
 	struct user newuser;
 	recv(newsockfd, &newuser, sizeof(struct user), 0);//receving userid and password entered by the client
-	if(strcmp(newuser.username,"anyone")!=0){
+	if(strcmp(newuser.username,"usergrp7")!=0){
 			errmsg=write(newsockfd,"Id not found !!!",strlen("Id not found !!!"));
 			close(newsockfd);
 			return 0;
 		}
 
-	if(strcmp(newuser.password,"hmm")!=0)
+	if(strcmp(newuser.password,"abc123")!=0)
 	{		errmsg=write(newsockfd,"Wrong Password !!!",strlen("Wrong Password !!!"));
 			close(newsockfd);
 			return 0;
@@ -88,29 +101,47 @@ S:	msg1 = write(newsockfd,"ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS
 
 	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
 	read(newsockfd,&operatrs,sizeof(operatrs));//read operators from client
-	
+
 	tn=-1; //number stack(top) initialization
 	to=-1; //operator stack(top) initialization
+
+	int c1=checkFormat(num);
+	int c2=checkFormat_operator(operatrs);
+
+	int x;
+	char msger[200];
+	if(c1==0||c2==0)
+	{
+			strcpy(msger,"Invalid !!! Enter Operands or Operators Correctly\n");
+		 x= write(newsockfd,&msger,sizeof(msger));
+
+	}
+
+	else{
 	solve(expression,num,operatrs);//forming an expression using operands and operators string
     printf("Entered expression is : %s \n",expression);
 	answer=eval(expression);//evaluate the expression formed and store it in the variable answer
 
-	//printf(" ans is %d +",answer);
-	char finans[256];
-	//printf("%s=",finans);
-	sprintf(finans,"%d",answer);//convert the answer to string
-	//printf("%s",finans);
-	int x=write(newsockfd,&finans,sizeof(finans));//send the evaluated answer to the client
 
-	if(x<0)
-	{
-	error("answer printing error");
+	char finans[256];
+
+	sprintf(finans,"%d",answer);//convert the answer to string
+
+
+	x=write(newsockfd,&finans,sizeof(finans));//send the evaluated answer to the client
+
+		if(x<0)
+		{
+		error("answer printing error");
+		}
 	}
+
+
 
 	read(newsockfd,&x,sizeof(int));//receive the choice entered by client
 	if(x==1)//continue is choosed
 	{
-		//initializing strings 
+		//initializing strings
 		strcpy(num,"");
 		strcpy(operatrs,"");
 		strcpy(buffer,"");

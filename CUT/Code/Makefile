@@ -1,15 +1,27 @@
-port=6000
-server: src/Server.c
-	gcc -o bin/server src/Server.c
+port = 6000
+BINDIR = bin
+OBJDIR = obj
+SRCDIR = src
+HEADER = Header
+flags = -g -c -I$(HEADER)
+
+server: Server.o
+	gcc $(OBJDIR)/Server.o -o $(BINDIR)/server
+	
+client: Client.o
+	gcc $(OBJDIR)/Client.o -o $(BINDIR)/client
+
+Server.o: src/Server.c
+	gcc $(flags) $(SRCDIR)/Server.c -o $(OBJDIR)/Server.o 
+	
+Client.o: src/Client.c
+	gcc $(flags) $(SRCDIR)/Client.c -o $(OBJDIR)/Client.o 
 
 runser: 
-	./bin/server $(port)
-
-client: src/Client.c
-	gcc -o bin/client src/Client.c
+	$(BINDIR)/server $(port)
 
 runcl: 
-	./bin/client 127.0.0.1 $(port)
+	$(BINDIR)/client 127.0.0.1 $(port)
 
 
 gcovcompser:
@@ -25,5 +37,8 @@ gcovrunser:
 
 gcovruncl:
 	gcov -b ../ToolsReport/GCOV/C-Client.c
+
+clean:
+	rm -rf $(BINDIR)/* $(OBJDIR)/*
 	
 

@@ -1,5 +1,3 @@
-#gcovexec= Calculate Client Server login
-srcfiles= Client.c Server.c
 port=6000
 server: src/Server.c
 	gcc -o bin/server src/Server.c
@@ -14,19 +12,18 @@ runcl:
 	./bin/client 127.0.0.1 $(port)
 
 
-gcovcompile:
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Server src/Server.c
-	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/Client src/Client.c
+gcovcompser:
+	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/S src/Server.c
+	./../ToolsReport/GCOV/S $(port)
 
-gcovrun: 
-	gcov -b ../ToolsReport/GCOV/Server.c
-	gcov -b ../ToolsReport/GCOV/Client.c
+gcovcompcl:
+	gcc -fprofile-arcs -ftest-coverage -o ../ToolsReport/GCOV/C src/Client.c
+	./../ToolsReport/GCOV/C 127.0.0.1 $(port)
 
+gcovrunser: 
+	gcov -b ../ToolsReport/GCOV/S-Server.c
 
-#gcovresult:
-	#cat ../ToolsReport/GCOV/$(srcfiles).gcov
-
-clean: 
-	rm -rf /bin/%.exe
+gcovruncl:
+	gcov -b ../ToolsReport/GCOV/C-Client.c
 	
 

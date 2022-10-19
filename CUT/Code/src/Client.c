@@ -1,5 +1,6 @@
 #include "../Header/Header2.h"
 #include "login.c"
+//function to print error message
 void error(const char *msg){
 	perror(msg);
 	exit(1);
@@ -7,42 +8,43 @@ void error(const char *msg){
 
 int main(int argc,char *argv[]){
 
-	struct user newuser=getdetails(1);
+	struct user newuser=getdetails(1);//get userid and passsword from the user
 
 	int sockfd,portno,n;
 	struct sockaddr_in serv_addr;
-	struct hostent *server;
-
+	struct hostent *server;//This structure describes an Internet host.
 	char buffer[256];
 	if(argc < 3){
 		fprintf(stderr,"usage %s hotname port\n",argv[0]);
 		exit(1);
 	}
 
-	portno = atoi(argv[2]);
-	sockfd = socket(AF_INET,SOCK_STREAM,0);
+	portno = atoi(argv[2]);//assign the port no. from argv[2]
+	sockfd = socket(AF_INET,SOCK_STREAM,0);//create a socket
 
 	if(sockfd < 0){
 		error("Error opening socket");
 	}
 
-	server = gethostbyname(argv[1]);
+	server = gethostbyname(argv[1]);//store internet host in server
 	if(server == NULL){
 		fprintf(stderr,"no Such host");
         exit(0);
 	}
-	bzero((char *) &serv_addr,sizeof(serv_addr));
+	bzero((char *) &serv_addr,sizeof(serv_addr));//reset the address buffer to zero
 
 	serv_addr.sin_family = AF_INET;
-	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,server->h_length);
+	
+	bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr,server->h_length);//giving socket address to the internet host
 	serv_addr.sin_port = htons(portno);
-	if(connect(sockfd, (struct sockaddr *) &serv_addr , sizeof(serv_addr)) < 0){
+	if(connect(sockfd, (struct sockaddr *) &serv_addr , sizeof(serv_addr)) < 0)//server connection is made
+	{
 		error("Connection Failed !!");
 	}
 
 
 
-	send(sockfd,&newuser,sizeof(newuser),0);
+	send(sockfd,&newuser,sizeof(newuser),0);//send the user details to the server for validation
 
 
 	char expression[256];
@@ -63,16 +65,9 @@ X:	bzero(buffer,256);
 	int x=write(sockfd,&nums,sizeof(nums));
 	bzero(buffer,256);
 	read(sockfd,buffer,256);
-	//getchar();
 	printf("SERVER - %s",buffer);
-      // 	bzero(buffer,256);
-	//read(sockfd,buffer,256);
 
-	//printf("SERVER - %s",buffer);
 	scanf("%s",operands);
-	//printf("%s",operands);
-	//fgets(operands,256,stdin);
-	//operands[strlen(operands)-1]='\0';//must
 
 	int y=write(sockfd,&operands,sizeof(operands));
 
@@ -90,8 +85,6 @@ X:	bzero(buffer,256);
 	{
 		goto X;
 	}
-
-
 
 	printf("YOU HAVE SELECTED TO EXIT \nEXIT SUCCESSFULLY!!!");
 	close(sockfd);

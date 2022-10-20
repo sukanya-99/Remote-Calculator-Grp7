@@ -1,180 +1,217 @@
-        -:    0:Source:Server.c
-        -:    0:Graph:s-Server.gcno
-        -:    0:Data:s-Server.gcda
-        -:    0:Runs:2
-        -:    1:#include "../Header/Header1.h"
-        -:    2:#include "Calculate.c"
-        -:    3:#include "login.c"
+        -:    0:Source:src/Server.c
+        -:    0:Graph:../ToolsReport/GCOV/S-Server.gcno
+        -:    0:Data:../ToolsReport/GCOV/S-Server.gcda
+        -:    0:Runs:1
+        -:    1:/********************************************
+        -:    2: * *FILENAME	      : Server.c
+        -:    3: *
+        -:    4: * *DESCRIPTION        : This file defines the functions that consists of various subfunctions 
+        -:    5: * 			            to perform certain operations from server end. 
+        -:    6: *
+        -:    7: *
+        -:    8: * Revision History   :	       
+        -:    9: *
+        -:   10: * 	Date			Name			Reason
+        -:   11: *
+        -:   12: * 14th Oct 2022	----			-----
+        -:   13: *
+        -:   14: *
+        -:   15:*********************************************/
+        -:   16:#include "../Header/Header.h"
+        -:   17:
+        -:   18://function to print error message
 function error called 0 returned 0% blocks executed 0%
-    #####:    4:void error(const char *msg){
-    #####:    5:	perror(msg);
+    #####:   19:void error(const char *msg){
+    #####:   20:	perror(msg);
 call    0 never executed
-    #####:    6:	exit(1);
-        -:    7:}
-        -:    8:
-        -:    9:// argc is the total number of parameter we are passing 
-        -:   10:
-function main called 2 returned 50% blocks executed 74%
-        2:   11:int main(int argc,char *argv[]){
-        2:   12:	if(argc < 2){
-branch  0 taken 1 (fallthrough)
-branch  1 taken 1
-        1:   13:		fprintf(stderr , "Port not provided . Program Terminated \n");
-call    0 returned 1
-call    1 returned 1
-        1:   14:		exit(1);
-call    0 returned 0
-        -:   15:	}
-        -:   16:
-        -:   17:	int sockfd,newsockfd,portno,n;
-        -:   18:	char buffer[255]; // to store msg ot send
-        -:   19:
-        -:   20:	struct sockaddr_in serv_addr , cli_addr;
-        -:   21:	socklen_t clilen; //socklen_t is a datatype in socket.h 32 bit 
-        -:   22:
-        1:   23:	sockfd = socket(AF_INET,SOCK_STREAM,0);
-call    0 returned 1
-        1:   24:	if(sockfd < 0){
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-        -:   25:		// if sock fd is resulting in failure
-    #####:   26:		error("Error opening socket");
+    #####:   21:	exit(1);
+        -:   22:}
+        -:   23:
+        -:   24:// argc is the total number of parameter we are passing
+        -:   25:
+function main called 1 returned 100% blocks executed 70%
+        1:   26:int main(int argc,char *argv[]){
+        1:   27:	if(argc < 2){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   28:		fprintf(stderr , "Port not provided . Program Terminated \n");
 call    0 never executed
-        -:   27:	} 
-        -:   28:	
-        1:   29:	bzero((char *) &serv_addr,sizeof(serv_addr)); // it clears all the data to what it it reference to 
-        -:   30:      
-        1:   31:	portno = atoi(argv[1]);
-call    0 returned 1
-        1:   32:	serv_addr.sin_family = AF_INET;
-        1:   33:	serv_addr.sin_addr.s_addr = INADDR_ANY;
-        1:   34:	serv_addr.sin_port = htons(portno);
-call    0 returned 1
-        -:   35:
-        1:   36:	if(bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0){
-call    0 returned 1
-branch  1 taken 0 (fallthrough)
-branch  2 taken 1
-    #####:   37:		error("Binding Failed");
+call    1 never executed
+    #####:   29:		exit(1);
 call    0 never executed
-        -:   38:		
-        -:   39:	}
-        -:   40:
-        -:   41:	// next step is our server is trying to connect
-        -:   42:	
-        1:   43:	listen(sockfd,5);
-call    0 returned 1
-        1:   44:	clilen = sizeof(cli_addr);
+        -:   30:	}
+        -:   31:
+        -:   32:	int sockfd,newsockfd,portno,n;
+        -:   33:	char buffer[255]; // to store msg at send
+        -:   34:
+        -:   35:	struct sockaddr_in serv_addr , cli_addr;
+        -:   36:	socklen_t clilen; //socklen_t is a datatype in socket.h 32 bit
+        -:   37:
+        1:   38:	sockfd = socket(AF_INET,SOCK_STREAM,0);//create socket
+call    0 returned 100%
+        1:   39:	if(sockfd < 0){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   40:		// if sock fd is resulting in failure
+    #####:   41:		error("Error opening socket");
+call    0 never executed
+        -:   42:	}
+        -:   43:
+        1:   44:	bzero((char *) &serv_addr,sizeof(serv_addr)); // it clears all the data to what it it reference to
         -:   45:
-        1:   46:	newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr , & clilen);
-call    0 returned 1
-        1:   47:	if(newsockfd < 0){
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-    #####:   48:		error("Error on Accept");
+        1:   46:	portno = atoi(argv[1]);//assign port no. from argv[1]
+call    0 returned 100%
+        1:   47:	serv_addr.sin_family = AF_INET;
+        1:   48:	serv_addr.sin_addr.s_addr = INADDR_ANY;
+        1:   49:	serv_addr.sin_port = htons(portno);
+call    0 returned 100%
+        -:   50:
+        1:   51:	if(bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)//bind the socket to server address
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+        -:   52:	{
+    #####:   53:		error("Binding Failed");
 call    0 never executed
-        -:   49:	}
-        -:   50:	
-        -:   51:	//user authentication 
-        -:   52:	int errmsg;
-        -:   53:	struct user newuser;
-        1:   54:	recv(newsockfd, &newuser, sizeof(struct user), 0);
-call    0 returned 1
-        1:   55:	if(strcmp(newuser.username,"anyone")!=0){
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-    #####:   56:			errmsg=write(newsockfd,"Id not found !!!",strlen("Id not found !!!"));
+        -:   54:
+        -:   55:	}
+        -:   56:
+        -:   57:	// next step is our server is trying to connect
+        -:   58:
+        1:   59:	listen(sockfd,1);//make the server wait server for the client
+call    0 returned 100%
+        1:   60:	clilen = sizeof(cli_addr);
+        -:   61:
+        1:   62:	newsockfd = accept(sockfd,(struct sockaddr *) &cli_addr , & clilen);//accept the incoming request to the server
+call    0 returned 100%
+        1:   63:	if(newsockfd < 0){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   64:		error("Error on Accept");
 call    0 never executed
-    #####:   57:			close(newsockfd);
+        -:   65:	}
+        -:   66:
+        -:   67:	//user authentication
+        -:   68:	int errmsg;
+        -:   69:	struct user newuser;
+        1:   70:	recv(newsockfd, &newuser, sizeof(struct user), 0);//receving userid and password entered by the client
+call    0 returned 100%
+        1:   71:	if(strcmp(newuser.username,"usergrp7")!=0){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   72:			errmsg=write(newsockfd,"Id not found !!!",strlen("Id not found !!!"));
 call    0 never executed
-    #####:   58:			return 0;
-        -:   59:			//errmsg=write(newsockfd,"ERROR")
-        -:   60:		}
-        -:   61:		
-        1:   62:	if(strcmp(newuser.password,"hmm")!=0)
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-    #####:   63:	{		errmsg=write(newsockfd,"Wrong Password !!!",strlen("Wrong Password !!!"));
+    #####:   73:			close(newsockfd);
 call    0 never executed
-    #####:   64:			close(newsockfd);
+    #####:   74:			return 0;
+        -:   75:		}
+        -:   76:
+        1:   77:	if(strcmp(newuser.password,"abc123")!=0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   78:	{		errmsg=write(newsockfd,"Wrong Password !!!",strlen("Wrong Password !!!"));
 call    0 never executed
-    #####:   65:			return 0;
-        -:   66:	}
-        -:   67:	
-        -:   68:	
-        -:   69:	int msg1,msg2,msg3,answer,choice;
-        -:   70:	
-        -:   71:	char num[256];
-        -:   72:	char operands[256];	
-        -:   73:	char  expression[256];
-        -:   74:
-        -:   75:	
-        -:   76:	
-        1:   77:S:	msg1 = write(newsockfd,"ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : ",strlen("ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : "));
-call    0 returned 1
-        1:   78:	if(msg1<0)
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-        -:   79:	{
-    #####:   80:	error("error writing to socket");	
+    #####:   79:			close(newsockfd);
 call    0 never executed
+    #####:   80:			return 0;
         -:   81:	}
-        1:   82:	read(newsockfd,&num,sizeof(num));
-call    0 returned 1
-        -:   83:	
-        -:   84:
-        -:   85:	//defining numbers and operands array 
-        -:   86:
-        1:   87:	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));	
-call    0 returned 1
-        -:   88:	//msg3 = write(newsockfd,"ENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("ENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
-        1:   89:	read(newsockfd,&operands,sizeof(operands));
-call    0 returned 1
-        -:   90:	//printf("-%s-",num);
-        -:   91:	//operands[strlen(operands)]='\0';	
-        -:   92:	
-        1:   93:	tn=-1;
-        1:   94:	to=-1;
-        1:   95:	solve(expression,num,operands); 
-call    0 returned 1
-        1:   96:    	printf("Entered expression is : %s \n",expression);
-call    0 returned 1
-        1:   97:	answer=eval(expression);
-call    0 returned 1
-        -:   98:	
-        -:   99:	//printf(" ans is %d +",answer);
-        -:  100:	char finans[256];
-        -:  101:	//printf("%s=",finans);
-        1:  102:	sprintf(finans,"%d",answer);
-        -:  103:	//printf("-%s-",finans);
-        -:  104:	//printf("%s",finans);
-        1:  105:	int x=write(newsockfd,&finans,sizeof(finans));
-call    0 returned 1
-        -:  106: 
-        1:  107:	if(x<0)
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
-        -:  108:	{
-    #####:  109:	error("answer printing error");	
+        -:   82:
+        -:   83:
+        -:   84:	int msg1,msg2,msg3,answer,choice;
+        -:   85:
+        -:   86:	char num[256];
+        -:   87:	char operatrs[256];
+        -:   88:	char expression[256];
+        -:   89:
+        -:   90:
+        -:   91:
+        2:   92:S:	msg1 = write(newsockfd,"ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : ",strlen("ENTER THE NUMBER OF OPERANDS FOLLOWED BY THE OPERANDS : "));
+call    0 returned 100%
+        2:   93:	if(msg1<0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   94:	{
+    #####:   95:		error("error writing to socket");
 call    0 never executed
-        -:  110:	}
-        -:  111:	
-        1:  112:	read(newsockfd,&x,sizeof(int));
-call    0 returned 1
-        1:  113:	if(x==1)
-branch  0 taken 0 (fallthrough)
-branch  1 taken 1
+        -:   96:	}
+        2:   97:	read(newsockfd,&num,sizeof(num));//read operands from client
+call    0 returned 100%
+        -:   98:
+        -:   99:
+        -:  100:	//defining numbers and operands array
+        -:  101:
+        2:  102:	msg2 = write(newsockfd,"OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON ",strlen("OPERATORS ALLOWED ARE ( + , - , * , /) !!! \nENTER THE  OPERATORS SEPERATED BY SEMICOLON "));
+call    0 returned 100%
+        2:  103:	read(newsockfd,&operatrs,sizeof(operatrs));//read operators from client
+call    0 returned 100%
+        -:  104:
+        2:  105:	tn=-1; //number stack(top) initialization
+        2:  106:	to=-1; //operator stack(top) initialization
+        -:  107:
+        2:  108:	int c1=checkFormat(num);
+call    0 returned 100%
+        2:  109:	int c2=checkFormat_operator(operatrs);
+call    0 returned 100%
+        -:  110:
+        -:  111:	int x;
+        -:  112:	char msger[200];
+        2:  113:	if(c1==0||c2==0)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
         -:  114:	{
-    #####:  115:		strcpy(num,"");
-    #####:  116:		strcpy(operands,"");
-    #####:  117:		strcpy(buffer,"");
-    #####:  118:                strcpy(expression,"");
+    #####:  115:			strcpy(msger,"Invalid !!! Enter Operands or Operators Correctly\n");
+    #####:  116:		 x= write(newsockfd,&msger,sizeof(msger));
+call    0 never executed
+        -:  117:
+        -:  118:	}
         -:  119:
-    #####:  120:		goto S;
-        -:  121:	}
-        1:  122:	close(newsockfd);
-call    0 returned 1
-        1:  123:	close(sockfd);
-call    0 returned 1
-        1:  124:	return 0;
-        -:  125:}
+        -:  120:	else{
+        2:  121:	solve(expression,num,operatrs);//forming an expression using operands and operators string
+call    0 returned 100%
+        2:  122:    printf("Entered expression is : %s \n",expression);
+call    0 returned 100%
+        2:  123:	answer=eval(expression);//evaluate the expression formed and store it in the variable answer
+call    0 returned 100%
+        -:  124:
+        -:  125:
+        -:  126:	char finans[256];
+        -:  127:
+        2:  128:	sprintf(finans,"%d",answer);//convert the answer to string
+        -:  129:
+        -:  130:
+        2:  131:	x=write(newsockfd,&finans,sizeof(finans));//send the evaluated answer to the client
+call    0 returned 100%
+        -:  132:
+        2:  133:		if(x<0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:  134:		{
+    #####:  135:		error("answer printing error");
+call    0 never executed
+        -:  136:		}
+        -:  137:	}
+        -:  138:
+        -:  139:
+        -:  140:
+        2:  141:	read(newsockfd,&x,sizeof(int));//receive the choice entered by client
+call    0 returned 100%
+        2:  142:	if(x==1)//continue is choosed
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+        -:  143:	{
+        -:  144:		//initializing strings
+        1:  145:		strcpy(num,"");
+        1:  146:		strcpy(operatrs,"");
+        1:  147:		strcpy(buffer,"");
+        1:  148:        strcpy(expression,"");
+        -:  149:
+        1:  150:		goto S;
+        -:  151:	}
+        1:  152:	close(newsockfd);
+call    0 returned 100%
+        1:  153:	close(sockfd);
+call    0 returned 100%
+        1:  154:	return 0;
+        -:  155:}

@@ -59,6 +59,8 @@ int main(int argc, char *argv[]) {
         error("Error on Accept");
     }
 
+    send(newsockfd, "Connected to server\n", sizeof("Connected to server\n"),0);
+
     // user authentication
     char buffer[255]; // to store msg at send
     int errmsg;

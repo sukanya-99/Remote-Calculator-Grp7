@@ -4,10 +4,12 @@
 #include "../header/valid.h"
 #include "../header/valid_suite.h"
 
-int validation(int top){               
-  if(top == -1)
-      return 1;
-   else
-      return 0;
+int validation(char *p){               
+     for(int i=0;i<strlen(p);i++)
+     {
+	if(!isdigit(p[i]))
+		return 0;
+     }
+	return 1;
 }
 

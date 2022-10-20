@@ -4,5 +4,5 @@
 #define SIZE 500
 
 
-int validation(int x);
+int validation(char *p);
 #endif  /* valid_H_ */

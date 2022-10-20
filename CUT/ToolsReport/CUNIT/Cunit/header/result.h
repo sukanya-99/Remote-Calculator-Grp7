@@ -3,5 +3,5 @@
 #define RESULT_H_
 
 
-int result_Valid(int x);
+int result_Valid(char *p);
 #endif  /* result_H_ */

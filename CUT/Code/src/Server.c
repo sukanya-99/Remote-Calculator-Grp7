@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in serv_addr, cli_addr;
     socklen_t clilen; // socklen_t is a datatype in socket.h 32 bit
     clilen = sizeof(cli_addr);
-    bzero((char *)&serv_addr, sizeof(serv_addr)); // it clears all the data to what it it reference to
+    bzero((char *)&serv_addr, sizeof(serv_addr)); // it clears all the data to what it reference to
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0); // create socket
     if (sockfd < 0) {

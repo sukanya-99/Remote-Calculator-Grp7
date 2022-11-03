@@ -1,0 +1,161 @@
+        -:    0:Source:src/Client.c
+        -:    0:Graph:../ToolsReport/GCOV/C-Client.gcno
+        -:    0:Data:../ToolsReport/GCOV/C-Client.gcda
+        -:    0:Runs:1
+        -:    1:/****************
+        -:    2: * *FILENAME	      : Client.c
+        -:    3: *
+        -:    4: * *DESCRIPTION        : This file defines the functions that consists of various subfunctions
+        -:    5: * 			            to perform certain operations from client end.
+        -:    6: *
+        -:    7: *
+        -:    8: * Revision History   :
+        -:    9: *
+        -:   10: * 	Date			Name			Reason
+        -:   11: *
+        -:   12: * 14th Oct 2022	----			-----
+        -:   13: *
+        -:   14: *
+        -:   15: ***************/
+        -:   16:#include "../Header/Header.h"
+        -:   17:
+        -:   18:// function to print error message
+function error called 0 returned 0% blocks executed 0%
+    #####:   19:void error(const char *msg) {
+    #####:   20:    perror(msg);
+call    0 never executed
+    #####:   21:    exit(1);
+        -:   22:}
+        -:   23:
+function main called 1 returned 100% blocks executed 78%
+        1:   24:int main(int argc, char *argv[]) {
+        -:   25:
+        1:   26:    if (argc < 3) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   27:        fprintf(stderr, "usage %s hotname port\n", argv[0]);
+call    0 never executed
+call    1 never executed
+    #####:   28:        exit(1);
+call    0 never executed
+        -:   29:    }
+        -:   30:
+        -:   31:    int sockfd, portno, n;
+        -:   32:    struct sockaddr_in serv_addr;
+        -:   33:    struct hostent *server; // This structure describes an Internet host.
+        1:   34:    bzero((char *)&serv_addr, sizeof(serv_addr)); // reset the address buffer to zero
+        -:   35:
+        1:   36:    portno = atoi(argv[2]);                   // assign the port no. from argv[2]
+call    0 returned 100%
+        1:   37:    sockfd = socket(AF_INET, SOCK_STREAM, 0); // create a socket
+call    0 returned 100%
+        -:   38:
+        1:   39:    if (sockfd < 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   40:        error("Error opening socket");
+call    0 never executed
+        -:   41:    }
+        -:   42:
+        1:   43:    server = gethostbyname(argv[1]); // store internet host in server
+call    0 returned 100%
+        -:   44:
+        1:   45:    if (server == NULL) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   46:        fprintf(stderr, "no Such host");
+call    0 never executed
+call    1 never executed
+    #####:   47:        exit(0);
+call    0 never executed
+        -:   48:    }
+        -:   49:    
+        1:   50:    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length); // giving socket address to the internet host
+        1:   51:    serv_addr.sin_family = AF_INET;
+        1:   52:    serv_addr.sin_port = htons(portno);
+call    0 returned 100%
+        -:   53:
+        1:   54:    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) // server connection is made
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+        -:   55:    {
+    #####:   56:        error("Connection Failed !!");
+call    0 never executed
+        -:   57:    }
+        -:   58:
+        1:   59:    char buffer[256] = "";
+        1:   60:    recv(sockfd, &buffer, sizeof(buffer), 0);
+call    0 returned 100%
+        1:   61:    printf("%s\n", buffer);
+call    0 returned 100%
+        -:   62:
+        1:   63:    struct user newuser = getdetails(1);                    // get userid and passsword from the user
+call    0 returned 100%
+        1:   64:    send(sockfd, &newuser, sizeof(newuser), 0); // send the user details to the server for validation
+call    0 returned 100%
+        -:   65:
+        1:   66:    char expression[256] = "";
+        1:   67:    char nums[256] = "";
+        1:   68:    char operands[256] = "";
+        -:   69:
+        2:   70:    while (1) {
+        -:   71:
+        3:   72:        bzero(buffer, 256);
+        3:   73:        read(sockfd, buffer, 256);
+call    0 returned 100%
+        3:   74:        if (strcmp(buffer, "Id not found !!!") == 0 || strcmp(buffer, "Wrong Password !!!") == 0) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+    #####:   75:            printf("%s\n", buffer);
+call    0 never executed
+    #####:   76:            break;
+        -:   77:        }
+        3:   78:        printf("SERVER - %s", buffer);
+call    0 returned 100%
+        -:   79:
+        3:   80:        scanf("%s", nums);
+call    0 returned 100%
+        -:   81:
+        3:   82:        int x = write(sockfd, &nums, sizeof(nums));
+call    0 returned 100%
+        3:   83:        bzero(buffer, 256);
+        3:   84:        read(sockfd, buffer, 256);
+call    0 returned 100%
+        3:   85:        printf("SERVER - %s", buffer);
+call    0 returned 100%
+        -:   86:
+        3:   87:        scanf("%s", operands);
+call    0 returned 100%
+        -:   88:
+        3:   89:        int y = write(sockfd, &operands, sizeof(operands));
+call    0 returned 100%
+        -:   90:
+        -:   91:        char answer[256];
+        3:   92:        read(sockfd, &answer, sizeof(answer));
+call    0 returned 100%
+        3:   93:        printf("SERVER : %s\n", answer);
+call    0 returned 100%
+        -:   94:        int choice;
+        3:   95:        printf("\n\n1.CONTINUE \n2.EXIT\n");
+call    0 returned 100%
+        3:   96:        scanf("%d", &choice);
+call    0 returned 100%
+        3:   97:        write(sockfd, &choice, sizeof(choice));
+call    0 returned 100%
+        -:   98:
+        3:   99:        if (choice != 1) {
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+        1:  100:            printf("YOU HAVE SELECTED TO EXIT \nEXIT SUCCESSFULLY!!!\n");
+call    0 returned 100%
+        1:  101:            break;
+        -:  102:        }
+        -:  103:    }
+        -:  104:
+        1:  105:    close(sockfd);
+call    0 returned 100%
+        1:  106:    return 0;
+        -:  107:}

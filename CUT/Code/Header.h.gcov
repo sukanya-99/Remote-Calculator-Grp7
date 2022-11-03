@@ -1,0 +1,431 @@
+        -:    0:Source:Header/Header.h
+        -:    0:Graph:../ToolsReport/GCOV/C-Client.gcno
+        -:    0:Data:../ToolsReport/GCOV/C-Client.gcda
+        -:    0:Runs:1
+        -:    1:#ifndef HEADER2_H
+        -:    2:#define HEADER2_H
+        -:    3:#include<stdio.h>
+        -:    4:#include<stdlib.h>
+        -:    5:#include<string.h>
+        -:    6:#include<ctype.h>
+        -:    7:#include<unistd.h>
+        -:    8:#include<sys/types.h>
+        -:    9:#include<sys/socket.h>
+        -:   10:#include<netinet/in.h>
+        -:   11:#include<netdb.h>
+        -:   12:#endif
+        -:   13:#define maxlen 20
+        -:   14://Defining a structure user
+        -:   15:struct user{
+        -:   16:	char username[maxlen];
+        -:   17:	char password[maxlen];
+        -:   18:};
+        -:   19:
+        -:   20:int numbers[1000],tn=-1,to=-1;
+        -:   21:char op[1000];
+        -:   22:
+        -:   23:// Pushing numbers into number stack
+function push_num called 0 returned 0% blocks executed 0%
+    #####:   24:void push_num(int n)
+        -:   25:{
+    #####:   26:    numbers[++tn]=n;
+    #####:   27:}
+        -:   28:
+        -:   29:// Pushing operators into operator stack
+function push_op called 0 returned 0% blocks executed 0%
+    #####:   30:void push_op(char ch)
+        -:   31:{
+    #####:   32:    op[++to]=ch;
+    #####:   33:}
+        -:   34:
+        -:   35:// Popping the numbers out of the number stack
+function pop_num called 0 returned 0% blocks executed 0%
+    #####:   36:int pop_num()
+        -:   37:{
+    #####:   38:    return numbers[tn--];
+        -:   39:}
+        -:   40:
+        -:   41:// Popping the operators out of the operator stack
+function pop_op called 0 returned 0% blocks executed 0%
+    #####:   42:char pop_op()
+        -:   43:{
+    #####:   44:    return op[to--];
+        -:   45:}
+        -:   46:
+        -:   47:// Evaluate the Operation
+function infix_eval called 0 returned 0% blocks executed 0%
+    #####:   48:int infix_eval(int numbers[1000],char op[1000])
+        -:   49:{
+        -:   50:    int x,y;
+        -:   51:    char ope;
+    #####:   52:    x=pop_num();
+call    0 never executed
+    #####:   53:    y=pop_num();
+call    0 never executed
+    #####:   54:    ope=pop_op();
+call    0 never executed
+    #####:   55:    switch(ope)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+        -:   56:    {
+    #####:   57:    case '+':
+    #####:   58:        return x+y;
+    #####:   59:    case '-':
+        -:   60:	{
+    #####:   61:		return y-x;
+        -:   62:	}
+    #####:   63:    case '*':
+    #####:   64:        return x*y;
+    #####:   65:    case '/':
+        -:   66:        {
+    #####:   67:            if(x==0)
+branch  0 never executed
+branch  1 never executed
+        -:   68:        {
+    #####:   69:            printf("\nCannot divide by zero");
+call    0 never executed
+    #####:   70:            exit(0);
+call    0 never executed
+        -:   71:        }
+        -:   72:        else
+    #####:   73:            return y/x;
+        -:   74:            }
+        -:   75:    }
+    #####:   76:    return 0;
+        -:   77:}
+        -:   78:
+        -:   79:// Check if the character is an Operator
+function is_operator called 0 returned 0% blocks executed 0%
+    #####:   80:int is_operator(char ch)
+        -:   81:{
+    #####:   82:    return (ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^');
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+branch  8 never executed
+branch  9 never executed
+        -:   83:}
+        -:   84:
+        -:   85:// Find the precedence of each Operator
+function precedence called 0 returned 0% blocks executed 0%
+    #####:   86:int precedence(char c)
+        -:   87:{
+    #####:   88:    switch(c)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:   89:    {
+    #####:   90:    case '+':
+    #####:   91:        return 1;
+    #####:   92:    case '-':
+    #####:   93:        return 1;
+    #####:   94:    case '*':
+    #####:   95:        return 2;
+    #####:   96:    case '/':
+    #####:   97:        return 2;
+    #####:   98:    case '^':
+    #####:   99:        return 3;
+        -:  100:    }
+    #####:  101:    return -1;
+        -:  102:}
+        -:  103:
+        -:  104:// Evaluate the expression
+function eval called 0 returned 0% blocks executed 0%
+    #####:  105:int eval(char *expres)
+        -:  106:{
+        -:  107:    int i,num,output,r;
+        -:  108:    char c;
+    #####:  109:    for(i=0;expres[i]!='\0';i++)
+branch  0 never executed
+branch  1 never executed
+        -:  110:    {
+    #####:  111:        c=expres[i];
+    #####:  112:        if(isdigit(c)!=0)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  113:        {
+    #####:  114:            num=0;
+    #####:  115:            while(isdigit(c))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  116:            {
+    #####:  117:                num=num*10+(c-'0');
+    #####:  118:                i++;
+    #####:  119:                if(i<strlen(expres))
+branch  0 never executed
+branch  1 never executed
+    #####:  120:                    c=expres[i];
+        -:  121:                else
+    #####:  122:                    break;
+        -:  123:            }
+    #####:  124:            i--;
+    #####:  125:            push_num(num);
+call    0 never executed
+        -:  126:
+        -:  127:        }
+    #####:  128:        else if(c=='(')
+branch  0 never executed
+branch  1 never executed
+        -:  129:        {
+    #####:  130:            push_op(c);
+call    0 never executed
+        -:  131:        }
+    #####:  132:        else if(c==')')
+branch  0 never executed
+branch  1 never executed
+        -:  133:        {
+    #####:  134:            while(op[to]!='(')
+branch  0 never executed
+branch  1 never executed
+        -:  135:            {
+    #####:  136:                r=infix_eval(numbers,op);
+call    0 never executed
+    #####:  137:                push_num(r);
+call    0 never executed
+        -:  138:            }
+    #####:  139:            pop_op();
+call    0 never executed
+        -:  140:        }
+    #####:  141:        else if(is_operator(c))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+        -:  142:        {
+    #####:  143:            while(to!=-1 && precedence(c)<=precedence(op[to]))
+branch  0 never executed
+branch  1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed
+branch  5 never executed
+        -:  144:                  {
+    #####:  145:                      output=infix_eval(numbers,op);
+call    0 never executed
+    #####:  146:                      push_num(output);
+call    0 never executed
+        -:  147:                  }
+    #####:  148:                  push_op(c);
+call    0 never executed
+        -:  149:        }
+        -:  150:
+        -:  151:    }
+    #####:  152:    while(to!=-1)
+branch  0 never executed
+branch  1 never executed
+        -:  153:    {
+    #####:  154:        output=infix_eval(numbers,op);
+call    0 never executed
+    #####:  155:        push_num(output);
+call    0 never executed
+        -:  156:    }
+    #####:  157:    return pop_num();
+call    0 never executed
+        -:  158:}
+        -:  159:
+        -:  160:// Forming the Expression using Operators and Operands string and store it into Expression string
+function solve called 0 returned 0% blocks executed 0%
+    #####:  161:void solve(char *expre,char * numb, char * opert)
+        -:  162:{
+        -:  163:
+        -:  164:	 char oper[1000];
+        -:  165:	 int num[1000];
+    #####:  166:      int i=0,k=0;
+    #####:  167:    char *token=strtok(numb,":");
+call    0 never executed
+    #####:  168:	int no_of_arguments=atoi(token);
+call    0 never executed
+    #####:  169:    while(token!=NULL)
+branch  0 never executed
+branch  1 never executed
+        -:  170:    {
+    #####:  171:        num[i]=atoi(token);
+call    0 never executed
+    #####:  172:        token=strtok(NULL,":");
+call    0 never executed
+    #####:  173:        i++;
+        -:  174:    }
+        -:  175:
+    #####:  176:    token=strtok(opert,";");
+call    0 never executed
+    #####:  177:    while(token!=NULL)
+branch  0 never executed
+branch  1 never executed
+        -:  178:    {
+    #####:  179:       oper[k]=*token;
+    #####:  180:        token=strtok(NULL,";");
+call    0 never executed
+    #####:  181:        k++;
+        -:  182:    }
+        -:  183:
+    #####:  184:	i=0;
+    #####:  185:	k=0;
+    #####:  186:	int x=0;
+        -:  187:
+    #####:  188:	for(i=1;i<no_of_arguments;i++,k++)
+branch  0 never executed
+branch  1 never executed
+        -:  189:	{
+    #####:  190:	  int op1=num[i];
+        -:  191:
+    #####:  192:	   char opd=oper[k];
+        -:  193:	   char str[100];
+    #####:  194:        sprintf(str, "%d", op1);
+    #####:  195:	   strcat(expre,str);
+    #####:  196:	   strncat(expre,&opd,1);
+        -:  197:	}
+    #####:  198:	int op1=num[i];
+        -:  199:    char str[100];
+    #####:  200:    sprintf(str, "%d", op1);
+    #####:  201:    strcat(expre,str);
+    #####:  202:    return;
+        -:  203:}
+        -:  204:
+        -:  205:// To input the Login credentials from User
+function getdetails called 1 returned 100% blocks executed 94%
+        1:  206:struct user getdetails(int x)
+        -:  207:{
+        -:  208:	char str[10];
+        -:  209:	struct user newuser;
+        -:  210:	char uname[20];
+        -:  211:	char pwd[20];
+        1:  212:	if(x==1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:  213:	strcpy(str,"CLIENT");
+        -:  214:	else
+    #####:  215:	strcpy(str,"SERVER");
+        1:  216:	int choice=0;
+        1:  217:	int Banker_pass=0;
+        -:  218:
+        1:  219:	system("clear");
+call    0 returned 100%
+        -:  220:
+        1:  221:	printf("\n\nREMOTE CALCULATOR ",str);
+call    0 returned 100%
+        1:  222:	printf("\n\n%s SIDE ",str);
+call    0 returned 100%
+        1:  223:		printf("\n\n_________________________________________\n\n");
+call    0 returned 100%
+        1:  224:		printf("ENTER USERNAME :  ");
+call    0 returned 100%
+        1:  225:		fgets(newuser.username,20,stdin);
+call    0 returned 100%
+call    1 returned 100%
+        1:  226:		newuser.username[strlen(newuser.username)-1]='\0';
+        1:  227:		printf("\n\n");
+call    0 returned 100%
+        1:  228:		printf("ENTER PASSWORD :  ");
+call    0 returned 100%
+        1:  229:		fgets(newuser.password,20,stdin);
+call    0 returned 100%
+call    1 returned 100%
+        1:  230:		newuser.password[strlen(newuser.password)-1]='\0';
+        1:  231:		printf("\n");
+call    0 returned 100%
+        1:  232:	return newuser;
+        -:  233:}
+        -:  234:
+        -:  235:// to check if string is Numeric
+function is_num called 0 returned 0% blocks executed 0%
+    #####:  236:int is_num(char *str)
+        -:  237:{
+    #####:  238:	for(int i=0;i<strlen(str);i++)
+branch  0 never executed
+branch  1 never executed
+        -:  239:	{
+    #####:  240:	if(!isdigit(str[i]))
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  241:		return 0;
+        -:  242:	}
+    #####:  243:	return 1;
+        -:  244:}
+        -:  245:
+        -:  246://To check the format of Operators input by User
+function checkFormat_operator called 0 returned 0% blocks executed 0%
+    #####:  247:int checkFormat_operator(char *p_string)
+        -:  248:{
+        -:  249:    char *str;
+    #####:  250:    str=p_string;
+    #####:  251:    for(int i=0;i<strlen(str);i++)
+branch  0 never executed
+branch  1 never executed
+        -:  252:	{
+    #####:  253:	    if(i%2==0)
+branch  0 never executed
+branch  1 never executed
+        -:  254:	    {
+    #####:  255:	        if(!(str[i]=='+'||str[i]=='-'||str[i]=='*'||str[i]=='/'))
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+branch  4 never executed
+branch  5 never executed
+branch  6 never executed
+branch  7 never executed
+    #####:  256:		    return 0;
+        -:  257:	    }
+        -:  258:	    else
+        -:  259:	    {
+    #####:  260:	        if(str[i]!=';')
+branch  0 never executed
+branch  1 never executed
+    #####:  261:	            return 0;
+        -:  262:	    }
+        -:  263:	}
+    #####:  264:	return 1;
+        -:  265:}
+        -:  266:
+        -:  267://To check the format of Operands input by User
+function checkFormat called 0 returned 0% blocks executed 0%
+    #####:  268:int checkFormat(char *operan)
+        -:  269:{
+        -:  270:    char o_string[20];
+    #####:  271:    strcpy(o_string,operan);
+    #####:  272:	int i=-1,flag=0,len=strlen(o_string);
+    #####:  273:	char *token=strtok(o_string,":");
+call    0 never executed
+    #####:  274:	int no_of_arguments=atoi(token);
+call    0 never executed
+    #####:  275:    while(token!=NULL)
+branch  0 never executed
+branch  1 never executed
+        -:  276:    {
+        -:  277:        char str_check[100];
+    #####:  278:        strcpy(str_check,token);
+    #####:  279:        int len=strlen(token);
+    #####:  280:        str_check[len]='\0';
+    #####:  281:		if(is_num(str_check)==0)
+call    0 never executed
+branch  1 never executed
+branch  2 never executed
+    #####:  282:			flag=1;
+        -:  283:
+    #####:  284:        token=strtok(NULL,":");
+call    0 never executed
+    #####:  285:        i++;
+        -:  286:    }
+    #####:  287:    if(i!=no_of_arguments || flag==1)
+branch  0 never executed
+branch  1 never executed
+branch  2 never executed
+branch  3 never executed
+    #####:  288:    	return 0;
+    #####:  289:    return 1;
+        -:  290:
+        -:  291:}
